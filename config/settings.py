@@ -104,16 +104,30 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 import os
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PGDATABASE', 'ecommerce_db'),  # Railway sets PGDATABASE
-        'USER': os.getenv('PGUSER', 'postgres'),          # Railway sets PGUSER
-        'PASSWORD': os.getenv('PGPASSWORD', ''),          # Railway sets PGPASSWORD
-        'HOST': os.getenv('PGHOST', 'localhost'),         # Railway sets PGHOST
-        'PORT': os.getenv('PGPORT', '5432'),             # Railway sets PGPORT
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+if os.getenv('PGDATABASE'):  # if Railway env vars exist
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('PGDATABASE'),
+            'USER': os.getenv('PGUSER'),
+            'PASSWORD': os.getenv('PGPASSWORD'),
+            'HOST': os.getenv('PGHOST'),
+            'PORT': os.getenv('PGPORT'),
+        }
     }
-}
+else:  # fallback to local SQLite for development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 
 
 

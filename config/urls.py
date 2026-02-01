@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from products.views import home
 from rest_framework import routers, permissions
 from products.views import ProductViewSet
 from categories.views import CategoryViewSet
@@ -23,6 +24,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('', home),  # 👈 ROOT URL FIX
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
 

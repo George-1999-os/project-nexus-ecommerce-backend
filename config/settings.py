@@ -102,16 +102,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommerce_db',
-        'USER': 'postgres',
-        'PASSWORD': '199912',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('PGDATABASE', 'ecommerce_db'),  # Railway sets PGDATABASE
+        'USER': os.getenv('PGUSER', 'postgres'),          # Railway sets PGUSER
+        'PASSWORD': os.getenv('PGPASSWORD', ''),          # Railway sets PGPASSWORD
+        'HOST': os.getenv('PGHOST', 'localhost'),         # Railway sets PGHOST
+        'PORT': os.getenv('PGPORT', '5432'),             # Railway sets PGPORT
     }
 }
+
 
 
 
